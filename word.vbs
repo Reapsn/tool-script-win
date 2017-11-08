@@ -44,6 +44,33 @@ Sub 高级需求统一编号()
 
 End Sub
 
+' 自动统一编号项
+Sub 详细需求统一编号()
+  
+     Dim snItems
+     Dim snSuffix As String
+     
+     For Each aTable In ActiveDocument.Tables
+        If aTable.Rows.Count >= 2 And aTable.Columns.Count = 2 Then
+             If InStr(aTable.Cell(1, 1).Range.Text, "编号") > 0 Then
+                aTable.Range.Select
+                sn = findNumber()
+                snItems = Split(sn, ".", -1, 1)
+                 
+                snSuffix = "SRS_"
+                For i = 0 To UBound(snItems)
+                     snSuffix = snSuffix + snItems(i) + "_"
+                Next
+                
+                nn = Str(1)
+                aTable.Cell(1, 1 + 1).Range.Text = Left(snSuffix, Len(snSuffix) - 1)
+                
+             End If
+         End If
+     Next
+    
+End Sub
+
 Function isTableName(aRange As Word.Range)
 
     isTableName = False
@@ -229,7 +256,7 @@ With myDialog
     .AllowMultiSelect = True '允许多项选择
     If .Show = -1 Then '确定
        For Each oFile In .SelectedItems '在所有选取项目中循环
-       Set oDoc = Word.Documents.Open(FileName:=oFile, Visible:=False)
+       Set oDoc = Word.Documents.Open(fileName:=oFile, Visible:=False)
        oDoc.Revisions.AcceptAll
        oDoc.Close True
        Next
