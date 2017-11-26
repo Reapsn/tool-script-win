@@ -199,6 +199,8 @@ Sub 复制数据库工具库可识别的CSV到粘贴板()
     
     If Len(aCSVFile) > 0 Then
         ' 复制到粘贴板
+        ' 需要配置 Microsoft Forms 2.0 Object Library
+        ' fm20.dll
         Dim doClip As New DataObject
         doClip.SetText aCSVFile
         doClip.PutInClipboard
